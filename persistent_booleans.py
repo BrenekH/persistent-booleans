@@ -18,10 +18,7 @@ def explode_default_store():
     """Delete the default storage file.
 The user is expected to manage any other storage files they use.
     """
-    if default_file.exists():
-        # Path.unlink does have a missing_ok parameter that eliminates the need for the if exists
-        #   but it was introduced in 3.8 which is still too recent to expect everyone to be upgraded to.
-        default_file.unlink()
+    default_file.unlink(missing_ok=True)
 
 class Store:
     """Store is the top-level logical container of persistent booleans.
