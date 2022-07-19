@@ -33,5 +33,5 @@ The toggle functionality turned out to be the most challenging piece of the puzz
 I first considered subclassing the `bool` type, but a quick Google search ruled that out, so I went a step higher and subclassed `int` instead \([take that Guido](https://stackoverflow.com/a/2172204/13298346)\).
 However, if I wanted my precious `toggle()` so as to stay inline with the original implementation, I would need to make it return a new `ToggleableBoolean` instead of directly modifying the value.
 
-Overall, I \(mostly\) achieved what I set out to do, but I wouldn't recommend ever using this in an actual project.
-The fact of the matter is that databases like MySQL or PostgreSQL are much more suited for persistent storage, even with the seemingly annoying syntax of accessing and saving the values.
+While I \(mostly\) achieved what I set out to do, I wouldn't recommend ever using this in an actual project.
+Dedicated database software like MySQL or PostgreSQL are much more suited for persistent storage, even if they are more clunky to interact with.
