@@ -1,10 +1,10 @@
 """(Almost) Transparent Persistent Boolean Values
-Based on github.com/zachvance/kapuas, this module allows the creation of persistent boolean values that are almost transparent in the code.
+Based on github.com/zachvance/persistent_switch, this module allows the creation of persistent boolean values that are almost transparent in the code.
 The idea sounds solid on paper, but in practice they are very limited for the complex code that creates them.
 As such this module should not be used in any serious project. Literally any database system is better than this.
 """
 
-# Original idea (only persistence aspect): Zach Vance (github.com/zachvance)
+# Original idea: Zach Vance (github.com/zachvance)
 # Rewritten with transparency by: Brenek Harrison (github.com/BrenekH)
 
 from __future__ import annotations # This is Python 3.7+ and really only fixes the type hint for ToggleableBoolean.toggle()
@@ -47,7 +47,7 @@ class Store:
                 setattr(self, k, bool(v))
 
     def __setattr__(self, name: str, value) -> None:
-        if isinstance(value, bool) or isinstance(value, ToggleableBoolean):
+        if isinstance(value, (bool, ToggleableBoolean)):
             tb = ToggleableBoolean(1) if value else ToggleableBoolean(0)
             self.__store[name] = tb
             self.save()
@@ -63,8 +63,8 @@ class Store:
 class ToggleableBoolean(int):
     """Subclass of int that provides a toggle method
     """
-    def __new__(cls, value):
-        if value != 0 and value != 1:
+    def __new__(cls, value: int):
+        if value not in set(0, 1):
             raise ValueError(f"Invalid value {value} for ToggleableBoolean. Must be either 0 or 1.")
         return super(cls, cls).__new__(cls, value)
 
@@ -72,10 +72,6 @@ class ToggleableBoolean(int):
         """toggle returns a new ToggleableBoolean that is the opposite of the one that toggle is called on.
 
         Returns:
-            ToggleableBoolean: The new ToggleableBoolean.
+            ToggleableBoolean: The new toggled boolean.
         """
-        new_val = 0
-        if self == 0:
-            new_val = 1
-
-        return self.__class__(new_val)
+        return self.__class__(1 if self == 0 else 0)
